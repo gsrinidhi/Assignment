@@ -12,3 +12,4 @@ To-do:
 1. Solve pixxel_controller startup issue
 2. Add 50ms timing behaviour in both device emulation and user space pixxel_main application
 3. Will have to ensure data consistency in driver by adding locks
+4. Have to rename files in cFS from sample_app to pixxel_controller / pixxel_main and update includes
