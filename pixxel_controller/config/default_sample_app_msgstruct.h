@@ -76,11 +76,13 @@ typedef struct
     CFE_MSG_CommandHeader_t CommandHeader; /**< \brief Command header */
 } SAMPLE_APP_SendHkCmd_t;
 
+//struct to recieve read command over software bus
 typedef struct 
 {
     CFE_MSG_CommandHeader_t CommandHeader;
 } PIXXEL_CONTROLLER_DEV_READ_t;
 
+//struct to recieve write command along with data over software bus
 typedef struct 
 {
     CFE_MSG_CommandHeader_t CommandHeader;
@@ -95,7 +97,7 @@ typedef struct
     SAMPLE_APP_HkTlm_Payload_t Payload;         /**< \brief Telemetry payload */
 } SAMPLE_APP_HkTlm_t;
 
-//structure to send the data read from /dev/pixxeldriver0 file to ground station
+//structure to send the data read from /dev/pixxeldriver0 file to software bus
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TelemetryHeader; /**< \brief Telemetry header */

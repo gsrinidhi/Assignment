@@ -201,13 +201,13 @@ CFE_Status_t PIXXEL_CONTROLLER_ReadPixxelDriverCmd(const PIXXEL_CONTROLLER_DEV_R
     PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.seqNo = PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.seqNo + 1;
     memcpy(PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.RegValue, buffer, sizeof(buffer));
 
-    //send the telemetry packet to ground station
+    //send the data over software bus
     CFE_SB_TimeStampMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevReadBuf.TelemetryHeader));
     CFE_SB_TransmitMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevReadBuf.TelemetryHeader), true);
     return CFE_SUCCESS;
 }
 
-//command to read from /dev/pixxeldriver0 file and send the data to ground station
+//command to read from /dev/pixxeldriver0 file and send the data to software bus
 CFE_Status_t PIXXEL_CONTROLLER_WritePixxelDriverCmd(const PIXXEL_CONTROLLER_DEV_WRITE_t *Msg)
 {
     PIXXEL_CONTROLLER_Data.CommandCounter++;
@@ -224,7 +224,7 @@ CFE_Status_t PIXXEL_CONTROLLER_WritePixxelDriverCmd(const PIXXEL_CONTROLLER_DEV_
         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;  
     }
 
-    //read data from the pixxel driver file
+    //write data to device file
     // char buffer[4];
 
     int32 bytes_written = OS_write(fd, Msg->Payload.RegValue, 4 * sizeof(char));

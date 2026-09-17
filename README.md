@@ -6,6 +6,8 @@ Current status: Getting EC -104 when loading pixxel_controller in cFS Startup
 
 The yocto layer contains the device driver source code
 
+NOTE: the cFS zip file from recipes-apps/cFS/files has been removed due to github limitations. It contains the complete cFS along with the two apps compressed into a zip folder
+
 To-do:
 1. Solve pixxel_controller startup issue
 2. Add 50ms timing behaviour in both device emulation and user space pixxel_main application

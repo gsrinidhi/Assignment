@@ -45,7 +45,7 @@ typedef struct SAMPLE_APP_HkTlm_Payload
     uint8 CommandErrorCounter;
 } SAMPLE_APP_HkTlm_Payload_t;
 
-//define a structure to send the data read from /dev/pixxeldriver0 file to ground station
+//define a structure to send the data read from /dev/pixxeldriver0 file to software bus
 typedef struct PIXXEL_CONTROLLER_DisplayParam_Payload
 {
     uint8 seqNo;
