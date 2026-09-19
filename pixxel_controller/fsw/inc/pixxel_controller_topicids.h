@@ -23,7 +23,7 @@
 #ifndef SAMPLE_APP_TOPICIDS_H
 #define SAMPLE_APP_TOPICIDS_H
 
-#include "sample_app_topicid_values.h"
+#include "pixxel_controller_topicid_values.h"
 
 #define SAMPLE_APP_MISSION_CMD_TOPICID             SAMPLE_APP_MISSION_TIDVAL(CMD)
 #define DEFAULT_SAMPLE_APP_MISSION_CMD_TOPICID     0x82

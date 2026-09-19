@@ -10,11 +10,11 @@
 
 # The list of header files that control the SAMPLE_APP configuration
 set(PIXXEL_CONTROLLER_PLATFORM_CONFIG_FILE_LIST
-  sample_app_internal_cfg_values.h
-  sample_app_platform_cfg.h
-  sample_app_perfids.h
-  sample_app_msgids.h
-  sample_app_msgid_values.h
+  pixxel_controller_internal_cfg_values.h
+  pixxel_controller_platform_cfg.h
+  pixxel_controller_perfids.h
+  pixxel_controller_msgids.h
+  pixxel_controller_msgid_values.h
 )
 
 generate_configfile_set(${PIXXEL_CONTROLLER_PLATFORM_CONFIG_FILE_LIST})

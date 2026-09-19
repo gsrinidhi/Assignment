@@ -1,0 +1,392 @@
+./build/qemu-system-aarch64     -machine virt     -cpu cortex-a57     -m 128M     -smp 4     -kernel /home/srinidhi/Documents/Pixxel/Assignment/yocto/bitbake-builds/poky-master/build/tmp/deploy/images/qemuarm64/Image     -append "root=/dev/vda rw console=ttyAMA0 swiotlb=0 ip=10.0.2.15::10.0.2.2:255.255.255.0::eth0:off"     -drive file=/home/srinidhi/Documents/Pixxel/Assignment/yocto/bitbake-builds/poky-master/build/tmp/deploy/images/qemuarm64/rootfs.ext4,if=none,format=raw,id=disk0     -device virtio-blk-pci,drive=disk0     -netdev user,id=net0,hostfwd=udp::1234-:1234     -device virtio-net-pci,netdev=net0     -nographic
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x411fd070]
+[    0.000000] Linux version 7.2.4-yocto-standard (oe-user@oe-host) (aarch64-poky-linux-gcc (GCC) 16.2.0, GNU ld (GNU Binutils) 2.47.20260726) #1 SMP PREEMPT Mon Sep  7 21:22:39 UTC 2026
+[    0.000000] random: crng init done
+[    0.000000] Machine model: linux,dummy-virt
+[    0.000000] efi: UEFI not found.
+[    0.000000] OF: reserved mem: Reserved memory: No reserved-memory node in the DT
+[    0.000000] psci: probing for conduit method from DT.
+[    0.000000] psci: PSCIv1.1 detected in firmware.
+[    0.000000] psci: Using standard PSCI v0.2 function IDs
+[    0.000000] psci: Trusted OS migration not required
+[    0.000000] psci: SMC Calling Convention v1.0
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000040000000-0x0000000047ffffff]
+[    0.000000]   DMA32    empty
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000040000000-0x0000000047ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000040000000-0x0000000047ffffff]
+[    0.000000] percpu: Embedded 29 pages/cpu s78168 r8192 d32424 u118784
+[    0.000000] Detected PIPT I-cache on CPU0
+[    0.000000] CPU features: detected: Spectre-v2
+[    0.000000] CPU features: detected: Spectre-v4
+[    0.000000] CPU features: detected: Spectre-BHB
+[    0.000000] CPU features: detected: ARM erratum 1742098
+[    0.000000] CPU features: detected: ARM erratum 832075
+[    0.000000] CPU features: detected: ARM errata 1165522, 1319367, or 1530923
+[    0.000000] alternatives: applying boot alternatives
+[    0.000000] Kernel command line: root=/dev/vda rw console=ttyAMA0 swiotlb=0 ip=10.0.2.15::10.0.2.2:255.255.255.0::eth0:off
+[    0.000000] printk: log buffer data + meta data: 131072 + 458752 = 589824 bytes
+[    0.000000] Dentry cache hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.000000] software IO TLB: area num 4.
+[    0.000000] software IO TLB: SWIOTLB bounce buffer size roundup to 1MB
+[    0.000000] software IO TLB: mapped [mem 0x0000000047900000-0x0000000047a00000] (1MB)
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 32768
+[    0.000000] mem auto-init: stack:all(zero), heap alloc:off, heap free:off
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] ftrace: allocating 46350 entries in 182 pages
+[    0.000000] ftrace: allocated 182 pages with 5 groups
+[    0.000000] rcu: Preemptible hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU event tracing is enabled.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=512 to nr_cpu_ids=4.
+[    0.000000] 	Trampoline variant of Tasks RCU enabled.
+[    0.000000] 	Rude variant of Tasks RCU enabled.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+[    0.000000] RCU Tasks: Setting shift to 2 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=4.
+[    0.000000] RCU Tasks Rude: Setting shift to 2 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=4.
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] Root IRQ handler: gic_handle_irq
+[    0.000000] GICv2m: range[mem 0x08020000-0x08020fff], SPI[80:143]
+[    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[    0.000000] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[    0.000000] arch_timer: cp15 timer running at 62.50MHz (virt).
+[    0.000000] clocksource: arch_sys_counter: mask: 0x1ffffffffffffff max_cycles: 0x1cd42e208c, max_idle_ns: 881590405314 ns
+[    0.000050] sched_clock: 57 bits at 63MHz, resolution 16ns, wraps every 4398046511096ns
+[    0.004711] kfence: initialized - using 2097152 bytes for 255 objects at 0x(____ptrval____)-0x(____ptrval____)
+[    0.011137] Console: colour dummy device 80x25
+[    0.013857] Calibrating delay loop (skipped), value calculated using timer frequency.. 125.00 BogoMIPS (lpj=250000)
+[    0.013996] pid_max: default: 32768 minimum: 301
+[    0.017174] landlock: Up and running.
+[    0.020880] Mount-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.020911] Mountpoint-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+[    0.027934] VFS: Finished mounting rootfs on nullfs
+[    0.048453] cacheinfo: Unable to detect cache hierarchy for CPU 0
+[    0.059636] rcu: Hierarchical SRCU implementation.
+[    0.059666] rcu: 	Max phase no-delay instances is 1000.
+[    0.062758] EFI services will not be available.
+[    0.063672] smp: Bringing up secondary CPUs ...
+[    0.067201] Detected PIPT I-cache on CPU1
+[    0.068101] CPU1: Booted secondary processor 0x0000000001 [0x411fd070]
+[    0.073413] Detected PIPT I-cache on CPU2
+[    0.075499] CPU2: Booted secondary processor 0x0000000002 [0x411fd070]
+[    0.077875] Detected PIPT I-cache on CPU3
+[    0.078132] CPU3: Booted secondary processor 0x0000000003 [0x411fd070]
+[    0.078632] smp: Brought up 1 node, 4 CPUs
+[    0.078662] SMP: Total of 4 processors activated.
+[    0.078686] CPU: All CPU(s) started at EL1
+[    0.078751] CPU features: detected: 32-bit EL0 Support
+[    0.078810] CPU features: detected: CRC32 instructions
+[    0.078935] CPU features: detected: PMUv3
+[    0.088147] alternatives: applying system-wide alternatives
+[    0.111103] Memory: 94740K/131072K available (15936K kernel code, 2250K rwdata, 3916K rodata, 1984K init, 633K bss, 32456K reserved, 0K cma-reserved)
+[    0.138371] devtmpfs: initialized
+[    0.161357] posixtimers hash table entries: 2048 (order: 3, 32768 bytes, linear)
+[    0.161844] futex hash table entries: 1024 (65536 bytes on 1 NUMA nodes, total 64 KiB, linear).
+[    0.162855] 26528 pages in range for non-PLT usage
+[    0.162906] 518048 pages in range for PLT usage
+[    0.167248] DMI: not present or invalid.
+[    0.192311] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.197598] DMA: preallocated 128 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[    0.203248] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[    0.204283] ASID allocator initialised with 65536 entries
+[    0.204731] Serial: AMBA PL011 UART driver
+[    0.234714] 9000000.pl011: ttyAMA0 at MMIO 0x9000000 (irq = 13, base_baud = 0) is a PL011 rev1
+[    0.237227] printk: console [ttyAMA0] enabled
+[    0.262930] raid6: using neon recovery algorithm
+[    0.330257] raid6: int64x1  gen()  1970 MB/s
+[    0.399825] raid6: int64x2  gen()  2121 MB/s
+[    0.468949] raid6: int64x4  gen()  2512 MB/s
+[    0.538214] raid6: int64x8  gen()  1540 MB/s
+[    0.607315] raid6: neonx1   gen()  1417 MB/s
+[    0.676399] raid6: neonx2   gen()  2453 MB/s
+[    0.745483] raid6: neonx4   gen()  3564 MB/s
+[    0.814623] raid6: neonx8   gen()  4055 MB/s
+[    0.814718] raid6: using algorithm neonx8 gen() 4055 MB/s
+[    0.883811] raid6: .... xor() 1313 MB/s, rmw enabled
+[    0.885649] iommu: Default domain type: Translated
+[    0.885725] iommu: DMA domain TLB invalidation policy: strict mode
+[    0.888642] SCSI subsystem initialized
+[    0.890026] usbcore: registered new interface driver usbfs
+[    0.890378] usbcore: registered new interface driver hub
+[    0.890584] usbcore: registered new device driver usb
+[    0.890994] pps_core: LinuxPPS API ver. 1 registered
+[    0.891046] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.891144] PTP clock support registered
+[    0.905596] vgaarb: loaded
+[    0.907099] clocksource: Switched to clocksource arch_sys_counter
+[    0.957324] NET: Registered PF_INET protocol family
+[    0.958442] IP idents hash table entries: 2048 (order: 2, 16384 bytes, linear)
+[    0.964961] tcp_listen_portaddr_hash hash table entries: 256 (order: 0, 4096 bytes, linear)
+[    0.965058] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.965137] TCP established hash table entries: 1024 (order: 1, 8192 bytes, linear)
+[    0.965280] TCP bind hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[    0.967173] TCP: Hash tables configured (established 1024 bind 1024)
+[    0.968057] UDP hash table entries: 256 (order: 2, 16384 bytes, linear)
+[    0.969935] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.973923] RPC: Registered named UNIX socket transport module.
+[    0.974000] RPC: Registered udp transport module.
+[    0.974037] RPC: Registered tcp transport module.
+[    0.974056] RPC: Registered tcp-with-tls transport module.
+[    0.974073] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.974229] PCI: CLS 0 bytes, default 64
+[    0.992270] workingset: timestamp_bits=46 (anon: 41) max_order=15 bucket_order=0 (anon: 0)
+[    0.999442] NFS: Registering the id_resolver key type
+[    0.999983] Key type id_resolver registered
+[    1.000074] Key type id_legacy registered
+[    1.000324] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    1.000836] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+[    1.004968] Key type cifs.idmap registered
+[    1.009712] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 250)
+[    1.009979] io scheduler mq-deadline registered
+[    1.010113] io scheduler kyber registered
+[    1.010515] xor: measuring software checksum speed
+[    1.012478]    neon            :  2182 MB/sec
+[    1.013410]    32regs          :  3930 MB/sec
+[    1.014190]    8regs           :  4457 MB/sec
+[    1.014252] xor: using function: 8regs (4457 MB/sec)
+[    1.018969] pci-host-generic 4010000000.pcie: host bridge /pcie@10000000 ranges:
+[    1.020506] pci-host-generic 4010000000.pcie:       IO 0x003eff0000..0x003effffff -> 0x0000000000
+[    1.021222] pci-host-generic 4010000000.pcie:      MEM 0x0010000000..0x003efeffff -> 0x0010000000
+[    1.021357] pci-host-generic 4010000000.pcie:      MEM 0x8000000000..0xffffffffff -> 0x8000000000
+[    1.021886] pci-host-generic 4010000000.pcie: Memory resource size exceeds max for 32 bits
+[    1.022516] pci-host-generic 4010000000.pcie: ECAM at [mem 0x4010000000-0x401fffffff] for [bus 00-ff]
+[    1.024408] pci-host-generic 4010000000.pcie: PCI host bridge to bus 0000:00
+[    1.024694] pci_bus 0000:00: root bus resource [bus 00-ff]
+[    1.024796] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+[    1.024865] pci_bus 0000:00: root bus resource [mem 0x10000000-0x3efeffff]
+[    1.024883] pci_bus 0000:00: root bus resource [mem 0x8000000000-0xffffffffff]
+[    1.026155] pci 0000:00:00.0: [1b36:0008] type 00 class 0x060000 conventional PCI endpoint
+[    1.030991] pci 0000:00:01.0: [1af4:1001] type 00 class 0x010000 conventional PCI endpoint
+[    1.031279] pci 0000:00:01.0: BAR 0 [io  0x0000-0x007f]
+[    1.031399] pci 0000:00:01.0: BAR 1 [mem 0x00000000-0x00000fff]
+[    1.031659] pci 0000:00:01.0: BAR 4 [mem 0x00000000-0x00003fff 64bit pref]
+[    1.032869] pci 0000:00:02.0: [1af4:1000] type 00 class 0x020000 conventional PCI endpoint
+[    1.032980] pci 0000:00:02.0: BAR 0 [io  0x0000-0x001f]
+[    1.032997] pci 0000:00:02.0: BAR 1 [mem 0x00000000-0x00000fff]
+[    1.033317] pci 0000:00:02.0: BAR 4 [mem 0x00000000-0x00003fff 64bit pref]
+[    1.033428] pci 0000:00:02.0: ROM [mem 0x00000000-0x0003ffff pref]
+[    1.036763] pci 0000:00:02.0: ROM [mem 0x10000000-0x1003ffff pref]: assigned
+[    1.037010] pci 0000:00:01.0: BAR 4 [mem 0x8000000000-0x8000003fff 64bit pref]: assigned
+[    1.037367] pci 0000:00:02.0: BAR 4 [mem 0x8000004000-0x8000007fff 64bit pref]: assigned
+[    1.037512] pci 0000:00:01.0: BAR 1 [mem 0x10040000-0x10040fff]: assigned
+[    1.037670] pci 0000:00:02.0: BAR 1 [mem 0x10041000-0x10041fff]: assigned
+[    1.038313] pci 0000:00:01.0: BAR 0 [io  0x1000-0x107f]: assigned
+[    1.038379] pci 0000:00:02.0: BAR 0 [io  0x1080-0x109f]: assigned
+[    1.038674] pci_bus 0000:00: resource 4 [io  0x0000-0xffff]
+[    1.038704] pci_bus 0000:00: resource 5 [mem 0x10000000-0x3efeffff]
+[    1.038799] pci_bus 0000:00: resource 6 [mem 0x8000000000-0xffffffffff]
+[    1.048670] virtio-pci 0000:00:01.0: enabling device (0000 -> 0003)
+[    1.054043] virtio-pci 0000:00:02.0: enabling device (0000 -> 0003)
+[    1.088701] brd: module loaded
+[    1.089970] virtio_blk virtio0: 4/0/0 default/read/poll queues
+[    1.104449] virtio_blk virtio0: [vda] 120548 512-byte logical blocks (61.7 MB/58.9 MiB)
+[    1.130607] rtc-pl031 9010000.pl031: registered as rtc0
+[    1.131399] rtc-pl031 9010000.pl031: setting system clock to 2026-09-19T12:55:05 UTC (1789822505)
+[    1.134487] device-mapper: ioctl: 4.50.0-ioctl (2025-04-28) initialised: dm-devel@lists.linux.dev
+[    1.136685] usbcore: registered new interface driver usbhid
+[    1.136732] usbhid: USB HID core driver
+[    1.140721] hw perfevents: enabled with armv8_pmuv3 PMU driver, 7 (0,8000003f) counters available
+[    1.141776] u32 classifier
+[    1.141816]     input device check on
+[    1.141850]     Actions configured
+[    1.144611] NET: Registered PF_INET6 protocol family
+[    1.155642] Segment Routing with IPv6
+[    1.155899] In-situ OAM (IOAM) with IPv6
+[    1.156740] NET: Registered PF_PACKET protocol family
+[    1.157293] Bridge firewalling registered
+[    1.158488] l2tp_core: L2TP core driver, V2.0
+[    1.158648] Key type dns_resolver registered
+[    1.159451] NET: Registered PF_VSOCK protocol family
+[    1.179584] registered taskstats version 1
+[    1.204992] Key type .fscrypt registered
+[    1.205100] Key type fscrypt-provisioning registered
+[    1.210153] Btrfs loaded, zoned=no, fsverity=no
+[    1.227152] Key type encrypted registered
+[    1.228762] netconsole: network logging started
+[    1.259321] IP-Config: Complete:
+[    1.259410]      device=eth0, hwaddr=52:54:00:12:34:56, ipaddr=10.0.2.15, mask=255.255.255.0, gw=10.0.2.2
+[    1.259501]      host=10.0.2.15, domain=, nis-domain=(none)
+[    1.259518]      bootserver=255.255.255.255, rootserver=255.255.255.255, rootpath=
+[    1.380747] clk: Disabling unused clocks
+[    1.381043] PM: genpd: Disabling unused power domains
+[    1.387881] md: Waiting for all devices to be available before autodetect
+[    1.387936] md: If you don't use raid, use raid=noautodetect
+[    1.388037] md: Autodetecting RAID arrays.
+[    1.388068] md: autorun ...
+[    1.388137] md: ... autorun DONE.
+[    2.244188] EXT4-fs (vda): mounted filesystem 0ae31ef2-ae2b-447c-9d0d-9bbc9d339826 r/w with ordered data mode. Quota mode: disabled.
+[    2.244716] VFS: Mounted root (ext4 filesystem) on device 253:0.
+[    2.246226] devtmpfs: mounted
+[    2.248112] VFS: Pivoted into new rootfs
+[    2.304538] Freeing unused kernel memory: 1984K
+[    2.308939] Run /sbin/init as init process
+INIT: version 3.14 booting
+Starting udev
+[    2.780533] udevd[112]: starting version 3.2.14
+[    2.828377] udevd[113]: starting eudev-3.2.14
+[    2.928397] pixxeldriver: loading out-of-tree module taints kernel.
+[    2.936878] pixxelDriver: Test module loaded
+[    2.937144] pixxelDriver: Character device registered successfully
+[    2.938038] pixxelDevice: Waiting for module init to be done
+[    2.938167] pixxelDevice: probe called
+[    2.938264] pixxelDevice: physical address obtained
+[    3.133358] EXT4-fs (vda): re-mounted 0ae31ef2-ae2b-447c-9d0d-9bbc9d339826.
+INIT: Entering runlevel: 5
+Configuring network interfaces... ip: RTNETLINK answers: File exists
+Starting syslogd/klogd: done
+Starting cFS
+CFE_PSP: Default Reset SubType = 1
+CFE_PSP: Default CPU ID = 1
+CFE_PSP: Default Spacecraft ID = 66
+CFE_PSP: Default CPU Name: cpu1
+OS_Posix_GetSchedulerParams():208:Policy 1: available, min-max: 1-99
+OS_Posix_GetSchedulerParams():208:Policy 2: available, min-max: 1-99
+OS_Posix_TaskAPI_Impl_Init():401:Selected policy 2 for RT tasks, root task = 99
+CFE_PSP: initializing module 'soft_timebase' with ID 0110ff00
+CFE_PSP: Instantiated software timebase 'cFS-Master' running at 10000 usec
+CFE_PSP: initializing module 'timebase_posix_clock' with ID 0110ff01
+CFE_PSP: Using POSIX monotonic clock as CFE timebase
+CFE_PSP: initializing module 'eeprom_mmap_file' with ID 0110ff02
+CFE_PSP: Using MMAP simulated EEPROM implementation
+CFE_PSP: initializing module 'port_notimpl' with ID 0110ff03
+CFE_PSP: EEPROM Range (2) created: Start Address = FFFFBB1BE000, Size = 00080000 Status = 0
+CFE_PSP: I/O Port access not implemented
+CFE_PSP: initializing module 'iodriver' with ID 0110ff04
+CFE_PSP: initializing module 'linux_sysmon' with ID 0110ff05
+CFE_PSP: initializing module 'endian_api' with ID 0110ff06
+CFE_PSP: Host CPU Endian=LITTLE
+CFE_PSP: initializing module 'ram_notimpl' with ID 0110ff07
+CFE_PSP: Physical RAM access not implemented
+
+Poky (Yocto Project Reference Distro) 6.0.99+snapshot-fe7a24bc67118e7e184b5f5247258715e3904e7c qemuarm64 /dev/ttyAMA0
+
+qemuarm64 login: CFE_PSP: Starting the cFE with a POWER ON reset.
+CFE_PSP: Clearing out CFE CDS Shared memory segment.
+CFE_PSP: Clearing out CFE Reset Shared memory segment.
+CFE_PSP: Clearing out CFE User Reserved Shared memory segment.
+1980-001-00:00:05.13745 CFE_ES_SetupResetVariables: POWER ON RESET due to Power Cycle (Power Cycle).
+1980-001-00:00:05.13940 CFE_ES_Main: CFE_ES_Main in EARLY_INIT state
+Number of addresses returned by backtrace = 1
+CFE_PSP: CFE_PSP_AttachExceptions called
+1980-001-00:00:05.14904 CFE_ES_Main: CFE_ES_Main entering CORE_STARTUP state
+1980-001-00:00:05.14915 CFE_ES_CreateObjects: Starting Object Creation calls.
+1980-001-00:00:05.14921 CFE_ES_CreateObjects: Calling EarlyInit for CFE_CONFIG
+1980-001-00:00:05.15034 CFE_ES_CreateObjects: Calling EarlyInit for CFE_ES
+1980-001-00:00:05.15281 CFE_ES_CreateObjects: Calling EarlyInit for CFE_EVS
+1980-001-00:00:05.15374 CFE_EVS_EarlyInit: Event Log cleared following power-on reset
+1980-001-00:00:05.15388 CFE_ES_CreateObjects: Calling EarlyInit for CFE_FS
+1980-001-00:00:05.15400 CFE_ES_CreateObjects: Calling EarlyInit for CFE_SB
+1980-001-00:00:05.15756 CFE_ES_CreateObjects: Calling EarlyInit for CFE_TBL
+1980-001-00:00:05.16233 CFE_ES_CreateObjects: Calling EarlyInit for CFE_TIME
+EVS Port1 1980-012-14:03:20.06166 66/1/CFE_ES 1: cFE ES Initialized: CFE_ES v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+EVS Port1 1980-012-14:03:20.06369 66/1/CFE_ES 2: cFS Versions: cfe v7.0.1+dev1, osal v7.0.1+dev1, psp v7.0.1+dev1. cFE chksm 23650
+EVS Port1 1980-012-14:03:20.06399 66/1/CFE_ES 91: Version Info: Mission SampleMission, version git:v7.0.1-dirty
+EVS Port1 1980-012-14:03:20.06420 66/1/CFE_ES 91: Version Info: Module CORE_API, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06433 66/1/CFE_ES 91: Version Info: Module CONFIG, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06442 66/1/CFE_ES 91: Version Info: Module ES, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06449 66/1/CFE_ES 91: Version Info: Module EVS, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06457 66/1/CFE_ES 91: Version Info: Module FS, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06466 66/1/CFE_ES 91: Version Info: Module SB, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06474 66/1/CFE_ES 91: Version Info: Module TBL, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06481 66/1/CFE_ES 91: Version Info: Module TIME, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06489 66/1/CFE_ES 91: Version Info: Module OSAL, version git:v7.0.1-43-g838202d3-dirty
+EVS Port1 1980-012-14:03:20.06504 66/1/CFE_ES 91: Version Info: Module PSP, version git:v7.0.1-24-gf6ad04f-dirty
+EVS Port1 1980-012-14:03:20.06513 66/1/CFE_ES 91: Version Info: Module MSG, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06523 66/1/CFE_ES 91: Version Info: Module SBR, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06530 66/1/CFE_ES 91: Version Info: Module RESOURCEID, version git:v7.0.1-96-g2087c826-dirty
+EVS Port1 1980-012-14:03:20.06555 66/1/CFE_ES 92: Build 202609191254 by srinidhi@srinidhi-IdeaPad-5-Pro-14ACN6, config sample
+EVS Port1 1980-012-14:03:20.15567 66/1/CFE_EVS 1: cFE EVS Initialized: CFE_EVS v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+1980-012-14:03:20.25794 CFE_SB_AppInit: Registered 4 events for filtering
+EVS Port1 1980-012-14:03:20.25898 66/1/CFE_SB 1: cFE SB Initialized: CFE_SB v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+EVS Port1 1980-012-14:03:20.25926 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_SB
+EVS Port1 1980-012-14:03:20.36001 66/1/CFE_TBL 1: cFE TBL Initialized: CFE_TBL v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+EVS Port1 1980-012-14:03:20.36027 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_TBL
+EVS Port1 1980-012-14:03:20.46458 66/1/CFE_TIME 1: cFE TIME Initialized: CFE_TIME v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+EVS Port1 1980-012-14:03:20.46484 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CFE_TIME
+1980-012-14:03:20.51109 CFE_ES_CreateObjects: Finished ES CreateObject table entries.
+1980-012-14:03:20.51130 CFE_ES_Main: CFE_ES_Main entering CORE_READY state
+1980-012-14:03:20.51324 CFE_ES_OpenStartupScript: Opened ES App Startup file: /cf/cfe_es_startup.scr
+1980-012-14:03:20.51646 CFE_ES_ParseFileEntry: Loading shared library: /cf/cfe_assert.so
+1980-012-14:03:20.52424 [BEGIN] CFE FUNCTIONAL TEST
+1980-012-14:03:20.52474 [BEGIN] 01 CFE-STARTUP
+1980-012-14:03:20.52640 CFE_ES_ParseFileEntry: Loading shared library: /cf/sample_lib.so
+SAMPLE Lib Initialized.Sample Lib v7.0.0+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+1980-012-14:03:20.53159 CFE_ES_ParseFileEntry: Loading file: /cf/sch_lab.so, APP: SCH_LAB
+1980-012-14:03:20.53498 CFE_ES_ParseFileEntry: Loading file: /cf/ci_lab.so, APP: CI_LAB
+1980-012-14:03:20.53796 CFE_ES_ParseFileEntry: Loading file: /cf/to_lab.so, APP: TO_LAB
+1980-012-14:03:20.54176 CFE_ES_ParseFileEntry: Loading file: /cf/pixxel_controller.so, APP: PIXXEL_CONTROLLER
+1980-012-14:03:20.54585 CFE_ES_ParseFileEntry: Loading file: /cf/lc.so, APP: LC
+1980-012-14:03:20.54996 CFE_ES_ParseFileEntry: Loading file: /cf/cf.so, APP: CF
+1980-012-14:03:20.55328 CFE_ES_ParseFileEntry: Loading file: /cf/ds.so, APP: DS
+1980-012-14:03:20.55782 CFE_ES_ParseFileEntry: Loading file: /cf/fm.so, APP: FM
+1980-012-14:03:20.56277 CFE_ES_ParseFileEntry: Loading file: /cf/hk.so, APP: HK
+1980-012-14:03:20.56600 CFE_ES_ParseFileEntry: Loading file: /cf/hs.so, APP: HS
+1980-012-14:03:20.56901 CFE_ES_ParseFileEntry: Loading file: /cf/mm.so, APP: MM
+1980-012-14:03:20.57202 CFE_ES_ParseFileEntry: Loading file: /cf/sc.so, APP: SC
+1980-012-14:03:20.57531 CFE_ES_ParseFileEntry: Loading file: /cf/md.so, APP: MD
+1980-012-14:03:20.57847 CFE_ES_ParseFileEntry: Loading file: /cf/cs.so, APP: CS
+1980-012-14:03:20.59063 CI_LAB listening on UDP port: 1234
+EVS Port1 1980-012-14:03:20.59114 66/1/CI_LAB 3: CI Lab Initialized.CI Lab App v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+EVS Port1 1980-012-14:03:20.59140 66/1/CFE_SB 14: No subscribers for MsgId 0x808,sender CI_LAB
+SCH Lab Initialized.SCH Lab v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled
+EVS Port1 1980-012-14:03:20.59391 66/1/TO_LAB 1: TO Lab Initialized.TO Lab v7.0.1+dev1 (Draco) DEV BUILD, based on v7.0.1, EDS disabled, Awaiting enable command.
+EVS Port1 1980-012-14:03:20.60327 66/1/LC 56: WDT verify results: good = 0, bad = 0, unused = 176
+EVS Port1 1980-012-14:03:20.60473 66/1/LC 66: ADT verify results: good = 0, bad = 0, unused = 176
+EVS Port1 1980-012-14:03:20.60826 66/1/LC 23: LC use of Critical Data Store disabled, activity mask = 0x00991990
+EVS Port1 1980-012-14:03:20.60920 66/1/LC 2: LC Initialized. Version 7.0.1.255
+EVS Port1 1980-012-14:03:20.61097 66/1/DS 10: Destination file table verify results: good entries = 6, bad = 0, unused = 10
+EVS Port1 1980-012-14:03:20.61090 66/1/CF 20: CF Initialized. Version 7.0.1.255
+EVS Port1 1980-012-14:03:20.61265 66/1/DS 12: Filter table verify results: good entries = 14, bad = 0, unused = 242
+EVS Port1 1980-012-14:03:20.61497 66/1/FM 80: Free Space Table verify results: good entries = 3, bad = 0, unused = 5
+EVS Port1 1980-012-14:03:20.61584 66/1/DS 1: Application initialized, version 7.0.1.255, data at 0xffffbabf0458
+EVS Port1 1980-012-14:03:20.61872 66/1/HK 1: HK Initialized.  Version 7.0.1.255
+EVS Port1 1980-012-14:03:20.61926 66/1/FM 1: Initialization complete: version 7.0.1.255
+EVS Port1 1980-012-14:03:20.62229 66/1/MM 1: MM Initialized. Version 7.0.1.255
+EVS Port1 1980-012-14:03:20.62278 66/1/HS 54: ExeCount verify results: good = 5, bad = 0, unused = 27
+EVS Port1 1980-012-14:03:20.62409 66/1/HS 50: AppMon verify results: good = 0, bad = 0, unused = 32
+EVS Port1 1980-012-14:03:20.62528 66/1/HS 52: EventMon verify results: good = 0, bad = 0, unused = 16
+EVS Port1 1980-012-14:03:20.62725 66/1/HS 56: MsgActs verify results: good = 2, bad = 0, unused = 6
+1980-012-14:03:20.62960 HS_SysMonInit(): System Monitor using PSP device ID 0110ff05
+EVS Port1 1980-012-14:03:20.63072 66/1/MD 52: MD Dwell Tbl verify results: good = 0, bad = 0, unused = 25
+open(/proc/schedstat): No such file or directory
+EVS Port1 1980-012-14:03:20.63188 66/1/SC 21: RTS table files not loaded at initialization = 0 of 4
+1980-012-14:03:20.63200 HS_SysMonInit(): Unable to start device 0110ff05
+EVS Port1 1980-012-14:03:20.63204 66/1/MD 52: MD Dwell Tbl verify results: good = 0, bad = 0, unused = 25
+EVS Port1 1980-012-14:03:20.63206 66/1/HS 74: Error in system monitor initialization, RC=0xC8000005
+EVS Port1 1980-012-14:03:20.63473 66/1/SC 9: SC Initialized. Version 7.0.1.255
+EVS Port1 1980-012-14:03:20.63482 66/1/MD 52: MD Dwell Tbl verify results: good = 0, bad = 0, unused = 25
+EVS Port1 1980-012-14:03:20.63673 66/1/MD 52: MD Dwell Tbl verify results: good = 0, bad = 0, unused = 25
+EVS Port1 1980-012-14:03:20.63703 66/1/MD 7: Dwell Tables Recovered: 0, Dwell Tables Initialized: 4
+EVS Port1 1980-012-14:03:20.63720 66/1/MD 1: MD Initialized.  Version 7.0.1.255
+EVS Port1 1980-012-14:03:20.63803 66/1/CS 144: CS EEPROM Table verification results: good = 0, bad = 0, unused = 16
+EVS Port1 1980-012-14:03:20.63862 66/1/CS 107: CS EEPROM Table: No valid entries in the table
+EVS Port1 1980-012-14:03:20.63938 66/1/CS 143: CS Memory Table verification results: good = 0, bad = 0, unused = 16
+EVS Port1 1980-012-14:03:20.63958 66/1/CS 107: CS Memory Table: No valid entries in the table
+EVS Port1 1980-012-14:03:20.64070 66/1/CS 139: CS Tables Table verification results: good = 1, bad = 0, unused = 23
+EVS Port1 1980-012-14:03:20.64251 66/1/CS 142: CS Apps Table verification results: good = 0, bad = 0, unused = 24
+EVS Port1 1980-012-14:03:20.64279 66/1/CS 108: CS Apps Table: No valid entries in the table
+EVS Port1 1980-012-14:03:20.64308 66/1/CS 127: OS Text Segment disabled due to platform
+EVS Port1 1980-012-14:03:20.64324 66/1/CS 1: CS Initialized. Version 7.0.1.255
+EVS Port1 1980-012-14:03:20.67074 66/1/FM 72: Child Task initialization complete
+1980-012-14:03:20.68478 CFE_ES_Main: CFE_ES_Main entering APPS_INIT state
+1980-012-14:03:20.68492 CFE_ES_Main: CFE_ES_Main entering OPERATIONAL state
+EVS Port1 1980-012-14:03:20.69607 66/1/TO_LAB 19: L550 TO Lab subscribed to 32 messages from the table
+EVS Port1 1980-012-14:03:21.00093 66/1/CFE_TIME 21: Stop FLYWHEEL
+.EVS Port1 1980-012-14:03:29.03291 66/1/CFE_ES 6: Started PIXXEL_MAIN_APP from /cf/pixxel_main.so, AppID = 1114132
+[   15.247825] pixxel_Driver: pixxel_open called
+[   15.248339] pixxelDriver: pixxel_write called, count: 4PIXXELDEV: WRITE ENABLE = 0x31303030
+
+EVS Port1 1980-012-14:03:29.08880 66/1/PIXXEL_MAIN_APP 3: Write Ack recieved from pixxel controller
+Timer expired! ID = 589827
+[   15.300237] pixxel_Driver:PIXXELDEV: READ STATUS
+ pixxel_open called
+EVS Port1 1980-012-14:03:29.13987 66/1/CI_LAB 5: CI: NOOP command. Version 7.0.1.255
+EVS Port1 1980-012-14:03:29.14073 66/1/PIXXEL_MAIN_APP 3: Register read value = 0001
+[   15.300535] pixxelDriver: pixxel_read called, count: 4
+1980-012-14:03:29.14119 CFE_ES_ExitApp: Application PIXXEL_MAIN_APP called CFE_ES_ExitApp
+

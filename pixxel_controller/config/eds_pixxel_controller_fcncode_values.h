@@ -18,26 +18,22 @@
 
 /**
  * @file
- *   This file contains the prototypes for the Sample App Ground Command-handling functions
+ *   Specification for the CFE Executive Services (SAMPLE_APP) command function codes
+ *
+ * @note
+ *   This file should be strictly limited to the command/function code (CC)
+ *   macro definitions.  Other definitions such as enums, typedefs, or other
+ *   macros should be placed in the msgdefs.h or msg.h files.
  */
+#ifndef EDS_SAMPLE_APP_FCNCODES_H
+#define EDS_SAMPLE_APP_FCNCODES_H
 
-#ifndef SAMPLE_APP_CMDS_H
-#define SAMPLE_APP_CMDS_H
+#include "pixxel_controller_eds_cc.h"
 
-/*
-** Required header files.
-*/
-#include "cfe_error.h"
-#include "sample_app_msg.h"
+/************************************************************************
+ * Macro Definitions
+ ************************************************************************/
 
-CFE_Status_t SAMPLE_APP_SendHkCmd(const SAMPLE_APP_SendHkCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_NoopCmd(const SAMPLE_APP_NoopCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ResetCountersCmd(const SAMPLE_APP_ResetCountersCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ProcessCmd(const SAMPLE_APP_ProcessCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_DisplayParamCmd(const SAMPLE_APP_DisplayParamCmd_t *Msg);
-CFE_Status_t PIXXEL_Write_Test(void);
-CFE_Status_t PIXXEL_Read_Test(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-CFE_Status_t PIXXEL_Read_Test_Command(void);
-CFE_Status_t PIXXEL_Write_Ack(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
+#define SAMPLE_APP_CCVAL(x) EDS_CONTAINER_SAMPLE_APP_##x##_CC
 
-#endif /* SAMPLE_APP_CMDS_H */
+#endif

@@ -18,26 +18,20 @@
 
 /**
  * @file
- *   This file contains the prototypes for the Sample App Ground Command-handling functions
+ *   SAMPLE_APP Application Message IDs
  */
+#ifndef DEFAULT_SAMPLE_APP_MSGIDS_H
+#define DEFAULT_SAMPLE_APP_MSGIDS_H
 
-#ifndef SAMPLE_APP_CMDS_H
-#define SAMPLE_APP_CMDS_H
+#include "cfe_core_api_base_msgids.h"
+#include "pixxel_controller_msgid_values.h"
 
-/*
-** Required header files.
-*/
-#include "cfe_error.h"
-#include "sample_app_msg.h"
+#define SAMPLE_APP_CMD_MID     SAMPLE_APP_CMD_PLATFORM_MIDVAL(CMD)
+#define SAMPLE_APP_SEND_HK_MID SAMPLE_APP_CMD_PLATFORM_MIDVAL(SEND_HK)
+#define SAMPLE_APP_HK_TLM_MID  SAMPLE_APP_TLM_PLATFORM_MIDVAL(HK_TLM)
+#define PIXXEL_CONTROLLER_DEV_READ_MID  PIXXEL_CONTROLLER_CMD_PLATFORM_MIDVAL(DEV_READ)
+#define PIXXEL_CONTROLLER_DEV_WRITE_MID  PIXXEL_CONTROLLER_CMD_PLATFORM_MIDVAL(DEV_WRITE)
+#define PIXXEL_CONTROLLER_DEV_DATA_MID  PIXXEL_CONTROLLER_TLM_PLATFORM_MIDVAL(DEV_DATA)
+#define PIXXEL_CONTROLLER_DEV_ACK_MID  PIXXEL_CONTROLLER_TLM_PLATFORM_MIDVAL(DEV_ACK)
 
-CFE_Status_t SAMPLE_APP_SendHkCmd(const SAMPLE_APP_SendHkCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_NoopCmd(const SAMPLE_APP_NoopCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ResetCountersCmd(const SAMPLE_APP_ResetCountersCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ProcessCmd(const SAMPLE_APP_ProcessCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_DisplayParamCmd(const SAMPLE_APP_DisplayParamCmd_t *Msg);
-CFE_Status_t PIXXEL_Write_Test(void);
-CFE_Status_t PIXXEL_Read_Test(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-CFE_Status_t PIXXEL_Read_Test_Command(void);
-CFE_Status_t PIXXEL_Write_Ack(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-
-#endif /* SAMPLE_APP_CMDS_H */
+#endif

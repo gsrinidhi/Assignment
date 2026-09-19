@@ -1,18 +1,18 @@
 project(CFE_PIXXEL_CONTROLLER C)
 
 set(APP_SRC_FILES
-  fsw/src/sample_app.c
-  fsw/src/sample_app_cmds.c
-  fsw/src/sample_app_utils.c
+  fsw/src/pixxel_controller.c
+  fsw/src/pixxel_controller_cmds.c
+  fsw/src/pixxel_controller_utils.c
 )
 
 if (CFE_EDS_ENABLED)
   list(APPEND APP_SRC_FILES
-    fsw/src/sample_app_eds_dispatch.c
+    fsw/src/pixxel_controller_eds_dispatch.c
   )
 else()
   list(APPEND APP_SRC_FILES
-    fsw/src/sample_app_dispatch.c
+    fsw/src/pixxel_controller_dispatch.c
   )
 endif()
 
@@ -25,7 +25,7 @@ target_include_directories(pixxel_controller PUBLIC fsw/inc)
 add_cfe_app_dependency(pixxel_controller sample_lib)
 
 # Add table
-# add_cfe_tables(pixxel_controller fsw/tables/sample_app_tbl.c)
+# add_cfe_tables(pixxel_controller fsw/tables/pixxel_controller_tbl.c)
 
 # If UT is enabled, then add the tests from the subdirectory
 # Note that this is an app, and therefore does not provide

@@ -24,14 +24,14 @@
 /*
 ** Include Files:
 */
-#include "sample_app.h"
-#include "sample_app_cmds.h"
-#include "sample_app_msgids.h"
-#include "sample_app_eventids.h"
-#include "sample_app_version.h"
-#include "sample_app_tbl.h"
-#include "sample_app_utils.h"
-#include "sample_app_msg.h"
+#include "pixxel_controller.h"
+#include "pixxel_controller_cmds.h"
+#include "pixxel_controller_msgids.h"
+#include "pixxel_controller_eventids.h"
+#include "pixxel_controller_version.h"
+#include "pixxel_controller_tbl.h"
+#include "pixxel_controller_utils.h"
+#include "pixxel_controller_msg.h"
 
 /* The sample_lib module provides the SAMPLE_Function() prototype */
 #include "sample_lib.h"
@@ -165,113 +165,81 @@ CFE_Status_t SAMPLE_APP_DisplayParamCmd(const SAMPLE_APP_DisplayParamCmd_t *Msg)
     return CFE_SUCCESS;
 }
 
-CFE_Status_t PIXXEL_Write_Test(void) {
-    PIXXEL_MAIN_Data.devWrite.Payload.seqNo = 1;
-    memcpy(PIXXEL_MAIN_Data.devWrite.Payload.RegValue,"0001",4);
+//command to read from /dev/pixxeldriver0 file and send the data to ground station
+CFE_Status_t PIXXEL_CONTROLLER_ReadPixxelDriverCmd(const PIXXEL_CONTROLLER_DEV_READ_t *Msg)
+{
+    PIXXEL_CONTROLLER_Data.CommandCounter++;
 
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(PIXXEL_MAIN_Data.devWrite.CommandHeader));
-    CFE_SB_TransmitMsg(CFE_MSG_PTR(PIXXEL_MAIN_Data.devWrite.CommandHeader), true);
+    //open the pixxel driver file using the OSAL API
 
-    return CFE_SUCCESS;
-}
+    osal_id_t fd;
+    int32 retStatus = OS_OpenCreate(&fd,"/dev/pixxelDevice0", OS_FILE_FLAG_NONE, OS_READ_ONLY);
+    if (retStatus != OS_SUCCESS)
+    {
+        CFE_EVS_SendEvent(PIXXEL_CONTROLLER_OPEN_ERR_EID,
+                          CFE_EVS_EventType_ERROR,
+                          "PIXXEL_CONTROLLER: Error opening pixxel driver file, RC = %d",
+                          retStatus);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;  
+    }
 
-CFE_Status_t PIXXEL_Read_Test(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg) {
-    CFE_EVS_SendEvent(
-        3,
-        CFE_EVS_EventType_INFORMATION,
-        "Register read value = %s",
-        Msg->Payload.RegValue
-    );
-    return CFE_SUCCESS;
-}
+    //read data from the pixxel driver file
+    char buffer[4];
+    int32 bytes_read = OS_read(fd, buffer, sizeof(buffer));
+    if (bytes_read < 0)
+    {
+        CFE_EVS_SendEvent(PIXXEL_CONTROLLER_READ_ERR_EID,
+                          CFE_EVS_EventType_ERROR,
+                          "PIXXEL_CONTROLLER: Error reading pixxel driver file in read, RC = %d",
+                          bytes_read);
+        OS_close(fd);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
 
-CFE_Status_t PIXXEL_Write_Ack(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg) {
-    CFE_EVS_SendEvent(
-        3,
-        CFE_EVS_EventType_INFORMATION,
-        "Write Ack recieved from pixxel controller"
-    );
-    return CFE_SUCCESS;
-}
+    OS_close(fd);
 
-CFE_Status_t PIXXEL_Read_Test_Command(void) {
+    PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.seqNo = PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.seqNo + 1;
+    memcpy(PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.RegValue, buffer, sizeof(buffer));
 
-    CFE_SB_TimeStampMsg(CFE_MSG_PTR(PIXXEL_MAIN_Data.devRead.CommandHeader));
-    CFE_SB_TransmitMsg(CFE_MSG_PTR(PIXXEL_MAIN_Data.devRead.CommandHeader), true);
-
+    //send the telemetry packet to ground station
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevReadBuf.TelemetryHeader));
+    CFE_SB_TransmitMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevReadBuf.TelemetryHeader), true);
     return CFE_SUCCESS;
 }
 
 //command to read from /dev/pixxeldriver0 file and send the data to ground station
-// CFE_Status_t PIXXEL_CONTROLLER_ReadPixxelDriverCmd(const PIXXEL_CONTROLLER_DEV_READ_t *Msg)
-// {
-//     PIXXEL_CONTROLLER_Data.CommandCounter++;
+CFE_Status_t PIXXEL_CONTROLLER_WritePixxelDriverCmd(const PIXXEL_CONTROLLER_DEV_WRITE_t *Msg)
+{
+    PIXXEL_CONTROLLER_Data.CommandCounter++;
 
-//     //open the pixxel driver file using the OSAL API
-//     int32 fd = OS_open("/dev/pixxeldriver0", OS_READ_ONLY);
-//     if (fd < 0)
-//     {
-//         CFE_EVS_SendEvent(PIXXEL_CONTROLLER_OPEN_ERR_EID,
-//                           CFE_EVS_EventType_ERROR,
-//                           "PIXXEL_CONTROLLER: Error opening pixxel driver file, RC = %d",
-//                           fd);
-//         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;  
-//     }
+    //open the pixxel driver file using the OSAL API
+    osal_id_t fd;
+    int32 retStatus = OS_OpenCreate(&fd,"/dev/pixxelDevice0", OS_FILE_FLAG_NONE, OS_WRITE_ONLY);
+    if (retStatus != OS_SUCCESS)
+    {
+        CFE_EVS_SendEvent(PIXXEL_CONTROLLER_OPEN_ERR_EID,
+                          CFE_EVS_EventType_ERROR,
+                          "PIXXEL_CONTROLLER: Error opening pixxel driver file in write, RC = %d",
+                          retStatus);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;  
+    }
 
-//     //read data from the pixxel driver file
-//     char buffer[4];
-//     int32 bytes_read = OS_read(fd, buffer, sizeof(buffer));
-//     if (bytes_read < 0)
-//     {
-//         CFE_EVS_SendEvent(PIXXEL_CONTROLLER_READ_ERR_EID,
-//                           CFE_EVS_EventType_ERROR,
-//                           "PIXXEL_CONTROLLER: Error reading pixxel driver file, RC = %d",
-//                           bytes_read);
-//         OS_close(fd);
-//         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-//     }
+    //read data from the pixxel driver file
+    // char buffer[4];
 
-//     OS_close(fd);
+    int32 bytes_written = OS_write(fd, Msg->Payload.RegValue, 4 * sizeof(char));
+    if (bytes_written < 0)
+    {
+        CFE_EVS_SendEvent(PIXXEL_CONTROLLER_READ_ERR_EID,
+                          CFE_EVS_EventType_ERROR,
+                          "PIXXEL_CONTROLLER: Error writing pixxel driver file, RC = %d",
+                          bytes_written);
+        OS_close(fd);
+        return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
+    }
 
-//     PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.seqNo = PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.seqNo + 1;
-//     memcpy(PIXXEL_CONTROLLER_Data.DevReadBuf.Payload.RegValue, buffer, sizeof(buffer));
-
-//     //send the telemetry packet to ground station
-//     CFE_SB_TimeStampMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevReadBuf.TelemetryHeader));
-//     CFE_SB_TransmitMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevReadBuf.TelemetryHeader), true);
-//     return CFE_SUCCESS;
-// }
-
-// //command to read from /dev/pixxeldriver0 file and send the data to ground station
-// CFE_Status_t PIXXEL_CONTROLLER_WritePixxelDriverCmd(const PIXXEL_CONTROLLER_DEV_WRITE_t *Msg)
-// {
-//     PIXXEL_CONTROLLER_Data.CommandCounter++;
-
-//     //open the pixxel driver file using the OSAL API
-//     int32 fd = OS_open("/dev/pixxeldriver0", OS_WRITE_ONLY);
-//     if (fd < 0)
-//     {
-//         CFE_EVS_SendEvent(PIXXEL_CONTROLLER_OPEN_ERR_EID,
-//                           CFE_EVS_EventType_ERROR,
-//                           "PIXXEL_CONTROLLER: Error opening pixxel driver file, RC = %d",
-//                           fd);
-//         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;  
-//     }
-
-//     //read data from the pixxel driver file
-//     char buffer[4];
-
-//     int32 bytes_written = OS_write(fd, Msg->Payload.RegValue, 4 * sizeof(char));
-//     if (bytes_written < 0)
-//     {
-//         CFE_EVS_SendEvent(PIXXEL_CONTROLLER_READ_ERR_EID,
-//                           CFE_EVS_EventType_ERROR,
-//                           "PIXXEL_CONTROLLER: Error reading pixxel driver file, RC = %d",
-//                           bytes_written);
-//         OS_close(fd);
-//         return CFE_STATUS_EXTERNAL_RESOURCE_FAIL;
-//     }
-
-//     OS_close(fd);
-//     return CFE_SUCCESS;
-// }
+    OS_close(fd);
+    CFE_SB_TimeStampMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevWriteAck.TelemetryHeader));
+    CFE_SB_TransmitMsg(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevWriteAck.TelemetryHeader), true);
+    return CFE_SUCCESS;
+}

@@ -18,26 +18,29 @@
 
 /**
  * @file
- *   This file contains the prototypes for the Sample App Ground Command-handling functions
+ *
+ * SAMPLE_APP Application Mission Configuration Header File
+ *
+ * This is a compatibility header for the "mission_cfg.h" file that has
+ * traditionally provided public config definitions for each CFS app.
+ *
+ * @note This file may be overridden/superceded by mission-provided definitions
+ * either by overriding this header or by generating definitions from a command/data
+ * dictionary tool.
  */
+#ifndef SAMPLE_APP_INTERFACE_CFG_H
+#define SAMPLE_APP_INTERFACE_CFG_H
 
-#ifndef SAMPLE_APP_CMDS_H
-#define SAMPLE_APP_CMDS_H
+#include "pixxel_controller_interface_cfg_values.h"
 
-/*
-** Required header files.
-*/
-#include "cfe_error.h"
-#include "sample_app_msg.h"
+/**
+ * \brief Length of string buffer in the Display Value command
+ *
+ * The Display Value command offers an example of how to use command
+ * parameters of different types.  This macro controls the length
+ * of the string parameter.
+ */
+#define SAMPLE_APP_MISSION_STRING_VAL_LEN         SAMPLE_APP_MISSION_CFGVAL(STRING_VAL_LEN)
+#define DEFAULT_SAMPLE_APP_MISSION_STRING_VAL_LEN 10
 
-CFE_Status_t SAMPLE_APP_SendHkCmd(const SAMPLE_APP_SendHkCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_NoopCmd(const SAMPLE_APP_NoopCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ResetCountersCmd(const SAMPLE_APP_ResetCountersCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ProcessCmd(const SAMPLE_APP_ProcessCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_DisplayParamCmd(const SAMPLE_APP_DisplayParamCmd_t *Msg);
-CFE_Status_t PIXXEL_Write_Test(void);
-CFE_Status_t PIXXEL_Read_Test(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-CFE_Status_t PIXXEL_Read_Test_Command(void);
-CFE_Status_t PIXXEL_Write_Ack(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-
-#endif /* SAMPLE_APP_CMDS_H */
+#endif

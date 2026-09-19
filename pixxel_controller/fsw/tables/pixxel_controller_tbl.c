@@ -16,28 +16,20 @@
  * limitations under the License.
  ************************************************************************/
 
-/**
- * @file
- *   This file contains the prototypes for the Sample App Ground Command-handling functions
- */
-
-#ifndef SAMPLE_APP_CMDS_H
-#define SAMPLE_APP_CMDS_H
+#include "cfe_tbl_filedef.h" /* Required to obtain the CFE_TBL_FILEDEF macro definition */
+#include "pixxel_controller_tbl.h"
 
 /*
-** Required header files.
+** The following is an example of the declaration statement that defines the desired
+** contents of the table image.
 */
-#include "cfe_error.h"
-#include "sample_app_msg.h"
+SAMPLE_APP_ExampleTable_t ExampleTable = { 1, 2 };
 
-CFE_Status_t SAMPLE_APP_SendHkCmd(const SAMPLE_APP_SendHkCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_NoopCmd(const SAMPLE_APP_NoopCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ResetCountersCmd(const SAMPLE_APP_ResetCountersCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ProcessCmd(const SAMPLE_APP_ProcessCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_DisplayParamCmd(const SAMPLE_APP_DisplayParamCmd_t *Msg);
-CFE_Status_t PIXXEL_Write_Test(void);
-CFE_Status_t PIXXEL_Read_Test(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-CFE_Status_t PIXXEL_Read_Test_Command(void);
-CFE_Status_t PIXXEL_Write_Ack(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-
-#endif /* SAMPLE_APP_CMDS_H */
+/*
+** The macro below identifies:
+**    1) the data structure type to use as the table image format
+**    2) the name of the table to be placed into the cFE Example Table File Header
+**    3) a brief description of the contents of the file image
+**    4) the desired name of the table image binary file that is cFE compatible
+*/
+CFE_TBL_FILEDEF(ExampleTable, SAMPLE_APP.ExampleTable, Table Utility Test Table, pixxel_controller_tbl.tbl)

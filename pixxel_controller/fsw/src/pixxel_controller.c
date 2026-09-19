@@ -24,44 +24,29 @@
 /*
 ** Include Files:
 */
-#include "sample_app.h"
-#include "sample_app_cmds.h"
-#include "sample_app_utils.h"
-#include "sample_app_eventids.h"
-#include "sample_app_dispatch.h"
-#include "sample_app_tbl.h"
-#include "sample_app_version.h"
+#include "pixxel_controller.h"
+#include "pixxel_controller_cmds.h"
+#include "pixxel_controller_utils.h"
+#include "pixxel_controller_eventids.h"
+#include "pixxel_controller_dispatch.h"
+#include "pixxel_controller_tbl.h"
+#include "pixxel_controller_version.h"
 
 /*
 ** global data
 */
-PIXXEL_MAIN_Data_t PIXXEL_MAIN_Data;
-
+PIXXEL_CONTROLLER_Data_t PIXXEL_CONTROLLER_Data;
 SAMPLE_APP_Data_t SAMPLE_APP_Data;
-
-int timerFlag = 0;
-
-void PixxelMainTimerCallBack(osal_id_t timer_id)
-{
-    // WARNING: This runs in an interrupt or high-priority OSAL context!
-    // Do not block, wait on mutexes, or call heavy print statements here.
-
-    timerFlag = 1;
-    
-    OS_printf("Timer expired! ID = %lu\n", (unsigned long)timer_id);
-}
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
 /*                                                                            */
 /* Application entry point and main process loop                              */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  * *  * * * * **/
-void PIXXEL_MAIN_Main(void)
+void PIXXEL_CTR_Main(void)
 {
     CFE_Status_t     status;
     CFE_SB_Buffer_t *SBBufPtr;
-    osal_id_t timer1;
-    uint32 acc;
 
     /*
     ** Create the first Performance Log entry
@@ -73,70 +58,42 @@ void PIXXEL_MAIN_Main(void)
     ** If the Initialization fails, set the RunStatus to
     ** CFE_ES_RunStatus_APP_ERROR and the App will not enter the RunLoop
     */
-    status = PIXXEL_MAIN_Init();
+    status = PIXXEL_CONTROLLER_Init();
     if (status != CFE_SUCCESS)
     {
-        PIXXEL_MAIN_Data.RunStatus = CFE_ES_RunStatus_APP_ERROR;
+        PIXXEL_CONTROLLER_Data.RunStatus = CFE_ES_RunStatus_APP_ERROR;
     }
-
-    /*
-    ** Performance Log Exit Stamp
-    */
-    CFE_ES_PerfLogExit(PIXXEL_CONTROLLER_PERF_ID);
-
-    //create the timer
-    OS_TimerCreate(&timer1,"Test_Timer",&acc,PixxelMainTimerCallBack);
 
     /*
     ** Sample App Runloop
     */
-
-    PIXXEL_Write_Test();
-    status = CFE_SB_ReceiveBuffer(&SBBufPtr, PIXXEL_MAIN_Data.CommandPipe, CFE_SB_PEND_FOREVER);
-
-    /*
-    ** Performance Log Entry Stamp
-    */
-    CFE_ES_PerfLogEntry(PIXXEL_CONTROLLER_PERF_ID);
-
-    if (status == CFE_SUCCESS)
+    while (CFE_ES_RunLoop(&PIXXEL_CONTROLLER_Data.RunStatus) == true)
     {
-        PIXXEL_MAIN_TaskPipe(SBBufPtr);
-    }
-    else
-    {
-        CFE_EVS_SendEvent(PIXXEL_CONTROLLER_PIPE_ERR_EID,
-                            CFE_EVS_EventType_ERROR,
-                            "PIXXEL CONTROLLER: SB Pipe Read Error, App Will Exit");
+        /*
+        ** Performance Log Exit Stamp
+        */
+        CFE_ES_PerfLogExit(PIXXEL_CONTROLLER_PERF_ID);
 
-        PIXXEL_MAIN_Data.RunStatus = CFE_ES_RunStatus_APP_ERROR;
-    }
-    timerFlag = 0;
-    OS_TimerSet(timer1,50000,0);
+        /* Pend on receipt of command packet */
+        status = CFE_SB_ReceiveBuffer(&SBBufPtr, PIXXEL_CONTROLLER_Data.CommandPipe, CFE_SB_PEND_FOREVER);
 
-    while(timerFlag == 0);
+        /*
+        ** Performance Log Entry Stamp
+        */
+        CFE_ES_PerfLogEntry(PIXXEL_CONTROLLER_PERF_ID);
 
-    PIXXEL_Read_Test_Command();
+        if (status == CFE_SUCCESS)
+        {
+            PIXXEL_CONTROLLER_TaskPipe(SBBufPtr);
+        }
+        else
+        {
+            CFE_EVS_SendEvent(PIXXEL_CONTROLLER_PIPE_ERR_EID,
+                              CFE_EVS_EventType_ERROR,
+                              "PIXXEL CONTROLLER: SB Pipe Read Error, App Will Exit");
 
-    /* Pend on receipt of command packet */
-    status = CFE_SB_ReceiveBuffer(&SBBufPtr, PIXXEL_MAIN_Data.CommandPipe, CFE_SB_PEND_FOREVER);
-
-    /*
-    ** Performance Log Entry Stamp
-    */
-    CFE_ES_PerfLogEntry(PIXXEL_CONTROLLER_PERF_ID);
-
-    if (status == CFE_SUCCESS)
-    {
-        PIXXEL_MAIN_TaskPipe(SBBufPtr);
-    }
-    else
-    {
-        CFE_EVS_SendEvent(PIXXEL_CONTROLLER_PIPE_ERR_EID,
-                            CFE_EVS_EventType_ERROR,
-                            "PIXXEL CONTROLLER: SB Pipe Read Error, App Will Exit");
-
-        PIXXEL_MAIN_Data.RunStatus = CFE_ES_RunStatus_APP_ERROR;
+            PIXXEL_CONTROLLER_Data.RunStatus = CFE_ES_RunStatus_APP_ERROR;
+        }
     }
 
     /*
@@ -144,7 +101,7 @@ void PIXXEL_MAIN_Main(void)
     */
     CFE_ES_PerfLogExit(PIXXEL_CONTROLLER_PERF_ID);
 
-    CFE_ES_ExitApp(PIXXEL_MAIN_Data.RunStatus);
+    CFE_ES_ExitApp(PIXXEL_CONTROLLER_Data.RunStatus);
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  */
@@ -152,15 +109,15 @@ void PIXXEL_MAIN_Main(void)
 /* Initialization                                                             */
 /*                                                                            */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **/
-CFE_Status_t PIXXEL_MAIN_Init(void)
+CFE_Status_t PIXXEL_CONTROLLER_Init(void)
 {
     CFE_Status_t status;
     // char         VersionString[PIXXEL_CONTROLLER_CFG_MAX_VERSION_STR_LEN];
 
     /* Zero out the global data structure */
-    memset(&PIXXEL_MAIN_Data, 0, sizeof(PIXXEL_MAIN_Data));
+    memset(&PIXXEL_CONTROLLER_Data, 0, sizeof(PIXXEL_CONTROLLER_Data));
 
-    PIXXEL_MAIN_Data.RunStatus = CFE_ES_RunStatus_APP_RUN;
+    PIXXEL_CONTROLLER_Data.RunStatus = CFE_ES_RunStatus_APP_RUN;
 
     /*
     ** Register the events
@@ -173,20 +130,23 @@ CFE_Status_t PIXXEL_MAIN_Init(void)
     else
     {
         /*
-         ** Initialize read and write command packet (clear user data area).
+         ** Initialize read data packet (clear user data area).
          */
-        CFE_MSG_Init(CFE_MSG_PTR(PIXXEL_MAIN_Data.devRead.CommandHeader),
-                     CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_READ_MID),
-                     sizeof(PIXXEL_MAIN_Data.devRead));
+        CFE_MSG_Init(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevReadBuf.TelemetryHeader),
+                     CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_DATA_MID),
+                     sizeof(PIXXEL_CONTROLLER_Data.DevReadBuf));
 
-        CFE_MSG_Init(CFE_MSG_PTR(PIXXEL_MAIN_Data.devWrite.CommandHeader),
-                     CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_WRITE_MID),
-                     sizeof(PIXXEL_MAIN_Data.devWrite));
+        /*
+         ** Initialize write ack packet (clear user data area).
+         */
+        CFE_MSG_Init(CFE_MSG_PTR(PIXXEL_CONTROLLER_Data.DevWriteAck.TelemetryHeader),
+                     CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_ACK_MID),
+                     sizeof(PIXXEL_CONTROLLER_Data.DevWriteAck));
 
         /*
          ** Create Software Bus message pipe.
          */
-        status = CFE_SB_CreatePipe(&PIXXEL_MAIN_Data.CommandPipe,
+        status = CFE_SB_CreatePipe(&PIXXEL_CONTROLLER_Data.CommandPipe,
                                    SAMPLE_APP_PLATFORM_PIPE_DEPTH,
                                    SAMPLE_APP_PLATFORM_PIPE_NAME);
         if (status != CFE_SUCCESS)
@@ -203,7 +163,7 @@ CFE_Status_t PIXXEL_MAIN_Init(void)
     //     /*
     //     ** Subscribe to Housekeeping request commands
     //     */
-    //     status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(SAMPLE_APP_SEND_HK_MID), PIXXEL_MAIN_Data.CommandPipe);
+    //     status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(SAMPLE_APP_SEND_HK_MID), PIXXEL_CONTROLLER_Data.CommandPipe);
     //     if (status != CFE_SUCCESS)
     //     {
     //         CFE_EVS_SendEvent(SAMPLE_APP_SUB_HK_ERR_EID,
@@ -218,7 +178,7 @@ CFE_Status_t PIXXEL_MAIN_Init(void)
     //     /*
     //     ** Subscribe to ground command packets
     //     */
-    //     status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(SAMPLE_APP_CMD_MID), PIXXEL_MAIN_Data.CommandPipe);
+    //     status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(SAMPLE_APP_CMD_MID), PIXXEL_CONTROLLER_Data.CommandPipe);
     //     if (status != CFE_SUCCESS)
     //     {
     //         CFE_EVS_SendEvent(SAMPLE_APP_SUB_CMD_ERR_EID,
@@ -231,24 +191,29 @@ CFE_Status_t PIXXEL_MAIN_Init(void)
     if (status == CFE_SUCCESS)
     {
         /*
-        ** Subscribe to pixxel device read data
+        ** Subscribe to pixxel device read
         */
-        status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_DATA_MID), PIXXEL_MAIN_Data.CommandPipe);
+        status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_READ_MID), PIXXEL_CONTROLLER_Data.CommandPipe);
         if (status != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(SAMPLE_APP_SUB_CMD_ERR_EID,
                               CFE_EVS_EventType_ERROR,
-                              "Sample App: Error Subscribing to read Commands, RC = 0x%08lX",
+                              "Sample App: Error Subscribing to device read, RC = 0x%08lX",
                               (unsigned long)status);
         }
+    }
 
-        //subscribe to write ack
-        status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_ACK_MID), PIXXEL_MAIN_Data.CommandPipe);
+    if (status == CFE_SUCCESS)
+    {
+        /*
+        ** Subscribe to pixxel device write
+        */
+        status = CFE_SB_Subscribe(CFE_SB_ValueToMsgId(PIXXEL_CONTROLLER_DEV_WRITE_MID), PIXXEL_CONTROLLER_Data.CommandPipe);
         if (status != CFE_SUCCESS)
         {
             CFE_EVS_SendEvent(SAMPLE_APP_SUB_CMD_ERR_EID,
                               CFE_EVS_EventType_ERROR,
-                              "Sample App: Error Subscribing to ack Commands, RC = 0x%08lX",
+                              "Sample App: Error Subscribing to device write, RC = 0x%08lX",
                               (unsigned long)status);
         }
     }
@@ -258,7 +223,7 @@ CFE_Status_t PIXXEL_MAIN_Init(void)
     //     /*
     //     ** Register Example Table(s)
     //     */
-    //     status = CFE_TBL_Register(&PIXXEL_MAIN_Data.TblHandles[0],
+    //     status = CFE_TBL_Register(&PIXXEL_CONTROLLER_Data.TblHandles[0],
     //                               "ExampleTable",
     //                               sizeof(SAMPLE_APP_ExampleTable_t),
     //                               CFE_TBL_OPT_DEFAULT,
@@ -272,7 +237,7 @@ CFE_Status_t PIXXEL_MAIN_Init(void)
     //     }
     //     else
     //     {
-    //         status = CFE_TBL_Load(PIXXEL_MAIN_Data.TblHandles[0], CFE_TBL_SRC_FILE, PIXXEL_CONTROLLER_PLATFORM_TABLE_FILE);
+    //         status = CFE_TBL_Load(PIXXEL_CONTROLLER_Data.TblHandles[0], CFE_TBL_SRC_FILE, PIXXEL_CONTROLLER_PLATFORM_TABLE_FILE);
     //     }
 
     //     CFE_Config_GetVersionString(VersionString,

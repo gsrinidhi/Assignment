@@ -18,26 +18,28 @@
 
 /**
  * @file
- *   This file contains the prototypes for the Sample App Ground Command-handling functions
+ *   Specification for the SAMPLE_APP table structures
+ *
+ * Provides default definitions for SAMPLE_APP table structures
+ *
+ * @note This file may be overridden/superceded by mission-provided definitions
+ * either by overriding this header or by generating definitions from a command/data
+ * dictionary tool.
  */
+#ifndef SAMPLE_APP_TBLSTRUCT_H
+#define SAMPLE_APP_TBLSTRUCT_H
 
-#ifndef SAMPLE_APP_CMDS_H
-#define SAMPLE_APP_CMDS_H
+/*************************************************************************
+ * Includes
+ *************************************************************************/
+#include "pixxel_controller_tbldefs.h"
 
-/*
-** Required header files.
-*/
-#include "cfe_error.h"
-#include "sample_app_msg.h"
+/************************************************************************
+ * Macro Definitions
+ ************************************************************************/
 
-CFE_Status_t SAMPLE_APP_SendHkCmd(const SAMPLE_APP_SendHkCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_NoopCmd(const SAMPLE_APP_NoopCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ResetCountersCmd(const SAMPLE_APP_ResetCountersCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_ProcessCmd(const SAMPLE_APP_ProcessCmd_t *Msg);
-CFE_Status_t SAMPLE_APP_DisplayParamCmd(const SAMPLE_APP_DisplayParamCmd_t *Msg);
-CFE_Status_t PIXXEL_Write_Test(void);
-CFE_Status_t PIXXEL_Read_Test(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
-CFE_Status_t PIXXEL_Read_Test_Command(void);
-CFE_Status_t PIXXEL_Write_Ack(const PIXXEL_CONTROLLER_DisplayParamTlm_t *Msg);
+/*************************************************************************
+ * Type Definitions
+ *************************************************************************/
 
-#endif /* SAMPLE_APP_CMDS_H */
+#endif

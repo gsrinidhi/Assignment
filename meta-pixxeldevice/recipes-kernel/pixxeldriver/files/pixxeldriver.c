@@ -8,6 +8,8 @@ int pixxelDriver_major = PIXXEL_DEFAULT_MAJOR;
 
 int result;
 
+int module_init_ready = 0;
+
 dev_t dev;
 
 static struct class *pixxelDriver_class;
@@ -90,6 +92,8 @@ static int pixxel_device_probe(struct platform_device *pdev)
     int minorNumber;
 
     pixxelDevice_t *pixxelDevice;
+    
+    pr_info("pixxelDevice: Waiting for module init to be done\n");
 
     pr_info("pixxelDevice: probe called\n");
 
@@ -204,6 +208,8 @@ static int __init pixxel_init(void){
         unregister_chrdev_region(dev, no_of_pixxelDevices);
         return PTR_ERR(pixxelDriver_class);
     }
+    
+    printk(KERN_INFO "pixxelDriver: Character device registered successfully\n");
 
     
 
@@ -221,7 +227,7 @@ static int __init pixxel_init(void){
     // pixxelDeviceTail = NULL;
     // pixxelDevice = NULL;
 
-    printk(KERN_INFO "pixxelDriver: Character device registered successfully\n");
+    
     return 0;
 }
 
